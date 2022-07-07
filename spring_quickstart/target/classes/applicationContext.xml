@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p ="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--配置User对象-->
+    <bean id="user" class="com.cuiwei.domain.User">
+        <property name="username" value="崔巍"></property>
+        <property name="age" value="18"></property>
+    </bean>
+
+
+    <!--在Spring配置文件中配置UserDaoImpl-->
+    <!--id唯一标识-->
+    <!--calss是实现类的全路径-->
+    <!--scope="singleton"创建的bean是单例的-->
+    <!--scope = "prototype创建的bean是多例的-->
+
+    <!--方式一，无参构造方法-->
+    <bean id="userDao" class="com.cuiwei.dao.impl.UserDaoimpl">
+        <!--ref是引用数据类型的注入    Value是普通类型的注入-->
+        <property name="username" value="崔巍"></property>
+        <property name="age" value="18"></property>
+
+        <!--通过list集合数据类型注入-->
+        <property name="list">
+            <list>
+            <value>aaaaa</value>
+            <ref bean="user"></ref>
+            </list>
+        </property>
+
+        <!--进行set集合数据类型的注入-->
+        <property name="set">
+           <set>
+               <value>bbbb</value>
+               <ref bean="user"></ref>
+           </set>
+        </property>
+
+        <!--进行Array数组类型注入-->
+        <property name="array">
+            <array>
+                <value>cccc</value>
+                <ref bean="user"></ref>
+            </array>
+        </property>
+
+        <!--进行Map集合数据类型的注入-->
+        <property name="map">
+            <map>
+                <entry key="k1" value="ddd"></entry>
+                <entry key = "k2" value-ref="user"></entry>
+            </map>
+        </property>
+
+        <!--进行properties数据类型的注入-->
+        <property name="properties">
+            <props>
+                <prop key="k1">v1</prop>
+                <prop key="k2">v2</prop>
+            </props>
+        </property>
+
+    </bean>
+
+    <bean id="userDao2" class="com.cuiwei.dao.impl.UserDaoimpl" scope="singleton"></bean>
+
+
+   <!-- &lt;!&ndash;方式二：工厂静态方法实例化&ndash;&gt;
+    <bean id="userDao" class="com.cuiwei.factory.StaticFactoryBean" factory-method="creatUserDao"></bean>
+-->
+
+    <!--配置UserService-->
+    <bean id="userService" class="com.cuiwei.service.impl.UserServiceimpl" p:userDao-ref="userDao" >
+        <!--constructor-arg index="0" type="com.cuiwei.dao.UserDao" ref="userDao"></constructor-arg>&ndash;&gt;
+        <constructor-arg name="userDao" ref="userDao"></constructor-arg>
+        <!-利用set方法依赖注入-->
+        <!--<property name="userDao" ref="userDao"></property>-->
+
+    </bean>
+
+    <import resource="applicationContext_dao.xml"></import>
+</beans>
+
+

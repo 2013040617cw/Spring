@@ -1,0 +1,7 @@
+<beans>
+
+    <!--id是标识   class中存的就是生成实例的类的全路径-->
+    <bean id ="UserDao" class = "com.cuiwei.dao.impl.IUserDaoImpl"></bean>
+
+
+</beans>
